@@ -195,6 +195,13 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPrecio_venta">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JFormattedTextField(formatter)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="NumberFormat format = DecimalFormat.getInstance();&#xa;        format.setGroupingUsed(false);&#xa;        NumberFormatter formatter = new NumberFormatter(format) {&#xa;            @Override&#xa;            public Object stringToValue(String string) throws ParseException {&#xa;                if (string == null || string.length() == 0) {&#xa;                    return null;&#xa;                }&#xa;                try {&#xa;                    return super.stringToValue(string);&#xa;                } catch (ParseException e) {&#xa;                    throw new ParseException(&quot;Solo se permiten n&#xfa;meros&quot;, e.getErrorOffset());&#xa;                }&#xa;            }&#xa;        };&#xa;        formatter.setValueClass(Integer.class);&#xa;        formatter.setMinimum(0);&#xa;        formatter.setMaximum(Integer.MAX_VALUE);&#xa;        formatter.setAllowsInvalid(false);&#xa;        formatter.setCommitsOnValidEdit(true);"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="260" y="290" width="238" height="-1"/>
@@ -342,6 +349,22 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="260" y="320" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnFijar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fijar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFijarActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnFijar.setVisible(false);"/>
+          </AuxValues>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="420" y="320" width="70" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

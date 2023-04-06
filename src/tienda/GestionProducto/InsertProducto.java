@@ -8,8 +8,13 @@ import java.sql.PreparedStatement;
 import javax.swing.SpinnerNumberModel;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.text.NumberFormatter;
 import tienda.Conexion;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 /**
  *
@@ -21,7 +26,7 @@ public class InsertProducto extends javax.swing.JFrame {
     Connection con = new Conexion().getConnection();
     boolean Seleccion_descuento = false;
     double precio_venta = 0;
-
+    double porcent_ganancia = 0;
     public InsertProducto() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -56,7 +61,27 @@ public class InsertProducto extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         txtMarca = new javax.swing.JTextField();
         txtPrecio_base = new javax.swing.JTextField();
-        txtPrecio_venta = new javax.swing.JTextField();
+        NumberFormat format = DecimalFormat.getInstance();
+        format.setGroupingUsed(false);
+        NumberFormatter formatter = new NumberFormatter(format) {
+            @Override
+            public Object stringToValue(String string) throws ParseException {
+                if (string == null || string.length() == 0) {
+                    return null;
+                }
+                try {
+                    return super.stringToValue(string);
+                } catch (ParseException e) {
+                    throw new ParseException("Solo se permiten números", e.getErrorOffset());
+                }
+            }
+        };
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(0);
+        formatter.setMaximum(Integer.MAX_VALUE);
+        formatter.setAllowsInvalid(false);
+        formatter.setCommitsOnValidEdit(true);
+        txtPrecio_venta = new JFormattedTextField(formatter);
         txtCantidad = new javax.swing.JTextField();
         btnCompletar = new javax.swing.JButton();
         JspPorcGanancia = new javax.swing.JSpinner();
@@ -71,6 +96,7 @@ public class InsertProducto extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
         JchPrecioPersonalizado = new javax.swing.JCheckBox();
+        btnFijar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +162,8 @@ public class InsertProducto extends javax.swing.JFrame {
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, 238, -1));
         jPanel1.add(txtMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 238, -1));
         jPanel1.add(txtPrecio_base, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 238, -1));
+
+        txtPrecio_venta.setEditable(false);
         jPanel1.add(txtPrecio_venta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 290, 238, -1));
         jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 238, -1));
 
@@ -204,6 +232,15 @@ public class InsertProducto extends javax.swing.JFrame {
         });
         jPanel1.add(JchPrecioPersonalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, -1, -1));
 
+        btnFijar.setText("Fijar");
+        btnFijar.setVisible(false);
+        btnFijar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFijarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnFijar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, 70, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -255,8 +292,12 @@ public class InsertProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCompletarActionPerformed
 
     private void JspPorcGananciaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_JspPorcGananciaStateChanged
-        precio_venta = Double.parseDouble(txtPrecio_base.getText()) + (Double.parseDouble(txtPrecio_base.getText()) * ((int) JspPorcGanancia.getValue())/100);
-        txtPrecio_venta.setText(String.valueOf(precio_venta));
+        if(!JchPrecioPersonalizado.isEnabled()){
+            precio_venta = Double.parseDouble(txtPrecio_base.getText()) + (Double.parseDouble(txtPrecio_base.getText()) * ((int) JspPorcGanancia.getValue())/100);
+            txtPrecio_venta.setText(String.valueOf(precio_venta));
+        }else{
+            precio_venta = Double.parseDouble(txtPrecio_venta.getText());
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_JspPorcGananciaStateChanged
 
@@ -298,11 +339,26 @@ public class InsertProducto extends javax.swing.JFrame {
     private void JchPrecioPersonalizadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JchPrecioPersonalizadoItemStateChanged
         // TODO add your handling code here:
         if(JchPrecioPersonalizado.isSelected()){
-            JspPorcGanancia.setEnabled(false);            
+            JspPorcGanancia.setEnabled(false);
+            txtPrecio_venta.setEditable(true);
+            btnFijar.setVisible(true);
         }else{
-            JspPorcGanancia.setEnabled(true);          
+            JspPorcGanancia.setEnabled(true);
+            txtPrecio_venta.setEditable(false);
+            btnFijar.setVisible(false);
         }
     }//GEN-LAST:event_JchPrecioPersonalizadoItemStateChanged
+
+    private void btnFijarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFijarActionPerformed
+        // TODO add your handling code here:
+        //Porcentaje de ganancia = ((Precio de venta - Costo) / Costo) x 100%
+        if(txtPrecio_venta.getText()!=null){
+            double preVenta = Integer.parseInt(txtPrecio_venta.getText());
+            double preBase = Integer.parseInt(txtPrecio_base.getText());
+            porcent_ganancia = ((preVenta  - preBase)/preBase)*100;
+            JspPorcGanancia.setValue((int)porcent_ganancia);
+        }
+    }//GEN-LAST:event_btnFijarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -347,6 +403,7 @@ public class InsertProducto extends javax.swing.JFrame {
     private javax.swing.JSpinner JspPorcDescuento;
     private javax.swing.JSpinner JspPorcGanancia;
     private javax.swing.JButton btnCompletar;
+    private javax.swing.JButton btnFijar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
