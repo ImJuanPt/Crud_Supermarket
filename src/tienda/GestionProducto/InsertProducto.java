@@ -70,6 +70,7 @@ public class InsertProducto extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
+        JchPrecioPersonalizado = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,12 +132,12 @@ public class InsertProducto extends javax.swing.JFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, -1, -1));
 
         jLabel7.setText("Cantidad");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 340, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, -1));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, 238, -1));
         jPanel1.add(txtMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 238, -1));
         jPanel1.add(txtPrecio_base, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 238, -1));
         jPanel1.add(txtPrecio_venta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 290, 238, -1));
-        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, 238, -1));
+        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 238, -1));
 
         btnCompletar.setText("Completar");
         btnCompletar.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +145,7 @@ public class InsertProducto extends javax.swing.JFrame {
                 btnCompletarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCompletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 610, -1, -1));
+        jPanel1.add(btnCompletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 640, -1, -1));
 
         JspPorcGanancia.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -167,33 +168,41 @@ public class InsertProducto extends javax.swing.JFrame {
                 JchkPromocionItemStateChanged(evt);
             }
         });
-        jPanel1.add(JchkPromocion, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 520, -1, -1));
+        jPanel1.add(JchkPromocion, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 550, -1, -1));
 
         JlPorcentaje.setText("Porcentaje de descuento");
-        jPanel1.add(JlPorcentaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 560, -1, -1));
+        jPanel1.add(JlPorcentaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 590, -1, -1));
 
         JspPorcDescuento.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 JspPorcDescuentoStateChanged(evt);
             }
         });
-        jPanel1.add(JspPorcDescuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 560, -1, 30));
+        jPanel1.add(JspPorcDescuento, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 590, -1, 30));
 
         JlPorcentaje2.setText("%");
-        jPanel1.add(JlPorcentaje2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 570, -1, -1));
+        jPanel1.add(JlPorcentaje2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 600, -1, -1));
 
         jLabel9.setText("Tipo producto");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 380, -1, -1));
-        jPanel1.add(txtTipoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 370, 238, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 410, -1, -1));
+        jPanel1.add(txtTipoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, 238, -1));
 
         jLabel10.setText("Descripcion");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 420, -1, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, -1, -1));
 
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
         jScrollPane1.setViewportView(txtDescripcion);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 420, 240, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 240, -1));
+
+        JchPrecioPersonalizado.setText("Precio personalizado");
+        JchPrecioPersonalizado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JchPrecioPersonalizadoItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(JchPrecioPersonalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,7 +212,9 @@ public class InsertProducto extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -284,6 +295,15 @@ public class InsertProducto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel11MouseClicked
 
+    private void JchPrecioPersonalizadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JchPrecioPersonalizadoItemStateChanged
+        // TODO add your handling code here:
+        if(JchPrecioPersonalizado.isSelected()){
+            JspPorcGanancia.setEnabled(false);            
+        }else{
+            JspPorcGanancia.setEnabled(true);          
+        }
+    }//GEN-LAST:event_JchPrecioPersonalizadoItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -320,6 +340,7 @@ public class InsertProducto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox JchPrecioPersonalizado;
     private javax.swing.JCheckBox JchkPromocion;
     private javax.swing.JLabel JlPorcentaje;
     private javax.swing.JLabel JlPorcentaje2;
